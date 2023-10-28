@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
+
 from pathlib import Path
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,9 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#(p9k5w0ccnl&93z^b0-rv#$!v&b=b*$jk1d4^nfdtr9q)^!1e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', True)
+SITE_ID = os.environ.get('SITE_ID', 1)
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
-ALLOWED_HOSTS = []
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Application definition
@@ -37,7 +45,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'celery',
+    'django_celery_beat',
+    # 'rest_framework',
+    # 'rest_framework.authtoken',
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -75,10 +95,18 @@ WSGI_APPLICATION = 'desafio_crawler.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME', 'mydatabase'),
+        'USER': os.environ.get('DB_USER', 'myuser'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'mypassword'),
+        'HOST': os.environ.get('DB_HOST', 'db'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 
 # Password validation
@@ -103,14 +131,36 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+from pytz import timezone
+# Configuração do idioma
+LANGUAGE_CODE = 'pt-br'  # Define o idioma como português brasileiro
 
-TIME_ZONE = 'UTC'
+# Configuração do fuso horário
+TIME_ZONE = 'America/Sao_Paulo'  # Define o fuso horário como horário de São Paulo, Brasil
+TIME_ZONE_OBJ = timezone(TIME_ZONE)
 
-USE_I18N = True
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Celery settings
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
 
-USE_TZ = True
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_DEBUG = True
+CELERYBEAT_DEBUG = True
+CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_RESULT_EXPIRES = 3600
+CELERY_TIMEZONE = TIME_ZONE_OBJ
 
+# CELERY_BEAT_SCHEDULE = {
+#     'task1': {
+#         'task': 'products.tasks.build_creat_and_update_products',
+#         'schedule': crontab(minute=35, hour=22),  # Às 23:30
+#
+#         # 'schedule': crontab(minute=0, hour='8,12,16'),  # Às 8h, 12h e 16h
+#     },
+# }
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
