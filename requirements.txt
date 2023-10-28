@@ -14,3 +14,5 @@ markdown==3.4.3
 django-filter==23.2
 faker==18.13.0
 pytz==2023.3
+selenium==3.141.0
+webdriver-manager==3.8.5
