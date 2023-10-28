@@ -163,5 +163,4 @@ cython_debug/
 venv
 /staticfiles/*
 /dump.rdb
-
-!/dev.env
+dev.env
