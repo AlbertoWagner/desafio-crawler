@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Lista de filmes
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">Lista de filmes</li>
+    <li class="breadcrumb-item">
+        <a href="{% url 'movie:export-movies-csv' %}" class="btn btn-primary">Exportar como CSV</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{% url 'movie:export-movies-json' %}" class="btn btn-primary">Exportar como JSON</a>
+    </li>
+        <li class="breadcrumb-item">
+        <a href="{% url 'movie:serializer-list' %}" class="btn btn-primary">Movie Serializer List</a>
+    </li>
+{% endblock %}
+
+
+{% block content %}
+    <table class="table" id="movie-table">
+        <thead class="thead-inverse">
+        <tr>
+            <th>Classificação</th>
+            <th>Pôster</th>
+            <th>Título</th>
+            <th>Ano</th>
+            <th>Duração</th>
+            <th>Atualizado em</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for movie in object_list %}
+            <tr>
+                <td>{{ movie.rating }}</td>
+                <td>
+                    {% if movie.poster_url %}
+                        <img src="{{ movie.poster_url }}" alt="Pôster">
+                    {% else %}
+                        Sem pôster disponível
+                    {% endif %}
+                </td>
+                <td>{{ movie.title }}</td>
+                <td>{{ movie.year }}</td>
+                <td>{{ movie.duration }}</td>
+                <td>{{ movie.updated_at|date:"Y-m-d H:i" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
