@@ -19,7 +19,6 @@ class MovieTestCase(TestCase):
         self.title = fake.catch_phrase()
         self.movie_data = {
             "title": self.title,
-            "director": fake.name(),
             "year": fake.random_int(min=1900, max=2023),
             "duration": f"{fake.random_int(min=60, max=240)} minutos",
             "rating": fake.pyfloat(left_digits=1, right_digits=1, positive=True),
