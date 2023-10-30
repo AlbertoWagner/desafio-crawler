@@ -9,9 +9,9 @@ services:
     ports:
       - "8187:8187"
     depends_on:
+      - selenium_firefox
       - db
       - redis
-      - selenium
     stdin_open: true
     tty: true
     env_file:
@@ -30,11 +30,22 @@ services:
   redis:
     image: redis
 
-  selenium:
-    image: selenium/standalone-firefox-debug:latest
+  selenium_firefox:
+    container_name: selenium_firefox
+    image: selenium/node-firefox-debug
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=selenium_hub
+      - HUB_PORT_4444_TCP_PORT=4444
     ports:
-      - "4444:4444"   # Selenium
-      - "5900:5900"   # VNC
+      - "5901:5900"
+    depends_on:
+      - selenium_hub
+
+  selenium_hub:
+      container_name: selenium_hub
+      image: selenium/hub
+      ports:
+        - "4444:4444"
 
   celery:
     build: .
