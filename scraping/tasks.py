@@ -6,7 +6,7 @@ from scraping.scrapers import WebMovieScraper
 
 
 @shared_task
-def build_creat_and_update_movies():
+def build_create_and_update_movies():
     logger = logging.getLogger("db")
     import datetime
 
@@ -64,5 +64,5 @@ def build_creat_and_update_movies():
             logger.exception("Erro ao criar novos filmes: %s", str(e))
 
     logger.info(
-        "Execução da função build_creat_and_update_movies() concluída com sucesso."
+        "Execução da função build_create_and_update_movies() concluída com sucesso."
     )

@@ -167,7 +167,7 @@ CELERY_TIMEZONE = TIME_ZONE_OBJ
 # Defina o agendamento para a tarefa 'task1'. A tarefa está agendada para rodar às 22:35 (10:35 PM) diariamente.
 CELERY_BEAT_SCHEDULE = {
     "task1": {
-        "task": "scraping.tasks.build_creat_and_update_movies",
+        "task": "scraping.tasks.build_create_and_update_movies",
         "schedule": crontab(minute=35, hour=22),  # Às 22:35 todos os dias.
     },
 }
