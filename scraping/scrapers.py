@@ -42,7 +42,6 @@ class WebMovieScraper:
             "rating": rating,
             "year": year,
             "duration": duration,
-            "director": "x",
             "poster_url": poster_url,
         }
 
