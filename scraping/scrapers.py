@@ -56,7 +56,7 @@ class WebMovieScraper:
             self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.END)
             time.sleep(5)
             self._screenshot_pag_movie(2)
-            if "© 1990-" in self.driver.page_source: # Fim da pág
+            if "© 1990-" in self.driver.page_source:  # Fim da pág
                 break
 
         page_source = self.driver.page_source
