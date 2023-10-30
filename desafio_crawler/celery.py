@@ -1,6 +1,5 @@
 import os
 from celery import Celery
-from celery.schedules import crontab
 from celery.signals import setup_logging
 
 # Define a variável de ambiente DJANGO_SETTINGS_MODULE para o arquivo de configurações Django.

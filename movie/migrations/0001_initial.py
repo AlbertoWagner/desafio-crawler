@@ -7,25 +7,42 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Movie',
+            name="Movie",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255, verbose_name='Título')),
-                ('year', models.CharField(max_length=4)),
-                ('duration', models.CharField(max_length=255)),
-                ('poster_url', models.URLField(blank=True, null=True, verbose_name='URL do Pôster')),
-                ('rating', models.IntegerField(blank=True, null=True, verbose_name='Classificação')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=255, verbose_name="Título")),
+                ("year", models.CharField(max_length=4)),
+                ("duration", models.CharField(max_length=255)),
+                (
+                    "poster_url",
+                    models.URLField(
+                        blank=True, null=True, verbose_name="URL do Pôster"
+                    ),
+                ),
+                (
+                    "rating",
+                    models.IntegerField(
+                        blank=True, null=True, verbose_name="Classificação"
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name': 'Filme',
-                'verbose_name_plural': 'Filmes',
+                "verbose_name": "Filme",
+                "verbose_name_plural": "Filmes",
             },
         ),
     ]
